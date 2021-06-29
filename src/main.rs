@@ -36,13 +36,20 @@ impl From<u8> for CoolingState {
 }
 
 fn main() {
+    match unsafe {libc::setuid(0)} {
+        0 => {},
+        _ => {
+            eprintln!("Root rights required");
+            return;
+        }
+    }
     let matches = App::new("extreme_cooling")
         .subcommand(SubCommand::with_name("switch").about("Switch extreme cooling status"))
         .subcommand(SubCommand::with_name("enable").about("Enable extreme cooling"))
         .subcommand(SubCommand::with_name("disable").about("Disable extreme cooling"))
         .subcommand(SubCommand::with_name("query").about("Get current status"))
         .get_matches();
-    let mut ec = EmbeddedController::new().expect("EC init error. Try to run with sudo");
+    let mut ec = EmbeddedController::new().expect("EC init error");
     let new_state = match matches.subcommand() {
         ("query", _) => {
             let current_state = CoolingState::from(ec.read(EXTREME_COOLING_REGISTER).unwrap());
