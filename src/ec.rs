@@ -1,4 +1,4 @@
-use cpuio::Port;
+use crate::cpuio::Port;
 use libc::ioperm;
 use std::marker::PhantomData;
 

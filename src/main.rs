@@ -5,6 +5,7 @@ use clap::{App, SubCommand};
 use crate::ec::EmbeddedController;
 
 mod ec;
+mod cpuio;
 
 const EXTREME_COOLING_REGISTER: u8 = 0xBD;
 
